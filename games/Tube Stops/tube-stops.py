@@ -1,5 +1,4 @@
 def get_tube_stops():
-    # Complete list of London Tube stops
     tube_stops = [
         "Acton Town", "Aldgate", "Aldgate East", "Alperton", "Amersham", "Angel", "Archway", 
         "Arnos Grove", "Arsenal", "Baker Street", "Balham", "Bank", "Barbican", "Barking", 
