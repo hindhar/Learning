@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unique Tube Stops Finder</title>
+    <style>
+        @font-face {
+            font-family: 'Johnston100';
+            src: url('/static/fonts/Johnston100 W03 Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Johnston100', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #F3F3F3;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        h1 {
+            color: #DC241F;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .instructions {
+            color: #0019A8;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .example {
+            font-size: 1em;
+            font-style: italic;
+            margin-bottom: 25px;
+            color: #1A1A1A;  /* Changed to a darker, more readable color */
+        }
+        #input-text {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #0019A8;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: 'Johnston100', sans-serif;
+        }
+        button {
+            background-color: #DC241F;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-family: 'Johnston100', sans-serif;
+            text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.1s;
+            display: block;
+            margin: 0 auto;
+        }
+        button:hover {
+            background-color: #B51F1A;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .failure {
+            color: #DC241F;
+            font-weight: bold;
+        }
+        #matching-stops {
+            margin-top: 15px;
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            gap: 20px;
+        }
+        #matching-stops div {
+            margin-bottom: 5px;
+            break-inside: avoid-column;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unique Tube Stops</h1>
+        <p class="instructions">Try to find a word or phrase that shares no letters with just one tube stop!</p>
+        <p class="example">For example, St John's Wood is the only tube stop that has 0 letters from the word 'Mackerel.'</p>
+        <input type="text" id="input-text" placeholder="Enter your word or phrase">
+        <button onclick="findUniqueStop()">Find Unique Stop</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function findUniqueStop() {
+            const inputText = document.getElementById('input-text').value;
+            const resultDiv = document.getElementById('result');
+
+            try {
+                const response = await fetch('/api/find-unique-stop', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ input_text: inputText }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                let resultHtml = `<p class="${result.success ? 'success' : 'failure'}">${result.message}</p>`;
+                
+                if (result.matching_stops.length > 0) {
+                    resultHtml += '<div id="matching-stops">';
+                    resultHtml += result.matching_stops.map(stop => `<div>${stop}</div>`).join('');
+                    resultHtml += '</div>';
+                }
+
+                resultDiv.innerHTML = resultHtml;
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="failure">An error occurred while fetching the results. Please try again.</p>`;
+            }
+        }
+        document.getElementById('input-text').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            findUniqueStop();
+        }
+    });
+    </script>
+</body>
+</html>
