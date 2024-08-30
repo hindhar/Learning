@@ -78,7 +78,7 @@ def find_unique_stop(input_text):
     elif len(unique_stops) == 0:
         return {
             "success": False,
-            "message": "Bad luck! Your word doesn't match any tube stops. Try a different word or phrase.",
+            "message": "Bad luck! There are no tube stops which share exactly 0 letters with your phrase. Try a different word or phrase.",
             "matching_stops": []
         }
     else:
