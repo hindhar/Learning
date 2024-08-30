@@ -10,6 +10,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 distro==1.9.0
 Flask==3.0.3
+flask-talisman==1.1.0
 frozenlist==1.4.1
 greenlet==3.0.3
 h11==0.14.0
