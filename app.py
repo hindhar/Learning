@@ -68,23 +68,23 @@ def has_no_common_letters(stop, input_text):
 def find_unique_stop(input_text):
     tube_stops = get_tube_stops()
     unique_stops = [stop for stop in tube_stops if has_no_common_letters(stop, input_text)]
-    
+
     if len(unique_stops) == 1:
         return {
             "success": True,
-            "message": "Congratulations! You've entered a phrase which has a unique tube stop.",
+            "message": f"Congratulations! You've entered '{input_text}' which has a unique tube stop.",
             "matching_stops": unique_stops
         }
     elif len(unique_stops) == 0:
         return {
             "success": False,
-            "message": "Bad luck! There are no tube stops which share exactly 0 letters with your phrase. Try a different word or phrase.",
+            "message": f"Bad luck! There are no tube stops which share exactly 0 letters with '{input_text}'. Try a different word or phrase.",
             "matching_stops": []
         }
     else:
         return {
             "success": False,
-            "message": f"Bad luck! Your word matches {len(unique_stops)} tube stops. Here they are:",
+            "message": f"Bad luck! There are {len(unique_stops)} tube stops that share no letters with '{input_text}'. Here they are:",
             "matching_stops": unique_stops
         }
 
