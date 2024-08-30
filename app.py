@@ -72,7 +72,7 @@ def find_unique_stop(input_text):
     if len(unique_stops) == 1:
         return {
             "success": True,
-            "message": f"Congratulations! You've entered '{input_text}' which has a unique tube stop.",
+            "message": f"Congratulations! You've entered '{input_text}' which shares no letters with exactly one tube stop.",
             "matching_stops": unique_stops
         }
     elif len(unique_stops) == 0:
